@@ -1624,10 +1624,10 @@ void Initial_MCNP_input()
 
   // before_surface_cnt += 2;
   // write the boundary surface
-  fprintf(fp, "%d px %.4f\n", 99000, OUTER_X_DOWN);
-  fprintf(fp, "%d px %.4f\n", 99001, OUTER_X_UP);
-  fprintf(fp, "%d py %.4f\n", 99002, OUTER_Y_DOWN);
-  fprintf(fp, "%d py %.4f\n", 99003, OUTER_Y_UP);
+  fprintf(fp, "%d px %.4f\n", *99000, OUTER_X_DOWN);
+  fprintf(fp, "%d px %.4f\n", *99001, OUTER_X_UP);
+  fprintf(fp, "%d py %.4f\n", *99002, OUTER_Y_DOWN);
+  fprintf(fp, "%d py %.4f\n", *99003, OUTER_Y_UP);
   // close the file
   fclose(fp);
 }
