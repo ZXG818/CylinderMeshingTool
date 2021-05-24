@@ -175,14 +175,14 @@ void IDW_TO_FLUENT(int thread_id,
       if(distance <= 1E-4)
       {
         Message("[*] Here is an interpolation point very near of the target point...\n");
-        C_UDMI(c, t, 0) = point[i].u.power;
+        C_UDMI(c, t, 0) = point[i].u.power / C_VOLUME(c, t);
         break;
       }
       denomerator += pow(distance, -6.0);
       numerator    = pow(distance, -6.0);
       power       += numerator * point[i].u.power;
     }
-    C_UDMI(c, t, 0) = power / denomerator;
+    C_UDMI(c, t, 0) = power / denomerator / C_VOLUME(c, t);
   }end_c_loop(c, t)
 }
 
@@ -2303,7 +2303,6 @@ void McnpPowerArrange()
   double power_sum = 0.0;
   int i, j;
   double temp = 0.0;
-  double cell_volume = FUEL_VOLUME / FUEL_TOTAL;
   
   FILE *fp = fopen(real_name, "w");
   for (i=0; i<FUEL_TOTAL; i++)
@@ -2313,8 +2312,11 @@ void McnpPowerArrange()
   for (i=0; i<FUEL_TOTAL; i++)
   {
     // get the real power density of the each cell.
-    // transfer the power(W) to power density(W/m3)
-    g_coarse_fuel[i].u.power = POWER_TOTAL * g_coarse_fuel[i].u.power / power_sum / cell_volume;
+    // because it is not convenient to obtain the mesh volume in MCNP directly,
+    // so we only arrange the power here, not the power density, we can calculate 
+    // the power density in the IDW_TO_FLUENT function, in there, we can get the 
+    // volume of cell through the macro "C_VOLUME" easily.
+    g_coarse_fuel[i].u.power = POWER_TOTAL * g_coarse_fuel[i].u.power / power_sum;
   }
   
   fclose(fp);
