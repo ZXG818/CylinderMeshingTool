@@ -1659,7 +1659,7 @@ void GenerateMcnpForCylinderRegion(double R_IN, double R_OUT, int layer_cnt,
   if(kind == FUEL_TYPE)
   {
     // the main purpose is to record the fuel cell location and the power density.
-    memcpy(g_coarse_fuel + g_index, array, sizeof(POINT)*total);
+    memcpy(g_coarse_fuel + g_index, point, sizeof(POINT)*total);
     g_index += total;
   }
 
